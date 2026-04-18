@@ -302,7 +302,7 @@ export function LoginPage({ onLogin }: Props) {
           MADE BY QXEPROGRAMS
         </p>
         <button
-          onClick={() => window.api.app.openExternal('https://discord.gg/AsZzX63sKV')}
+          onClick={() => window.api.app.openExternal('https://discord.gg/2EfdJfdwpp')}
           className="flex items-center gap-1.5 text-xs mx-auto transition-colors"
           style={{ color: 'rgba(255,255,255,0.3)' }}
           onMouseEnter={e => (e.currentTarget.style.color = '#5865F2')}

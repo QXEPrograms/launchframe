@@ -154,14 +154,14 @@ export function SettingsPage({ user }: Props) {
               label: 'Discord Server',
               desc: 'Get help, report bugs, and chat with the community',
               icon: MessageCircle,
-              url: 'https://discord.gg/AsZzX63sKV',
+              url: 'https://discord.gg/2EfdJfdwpp',
               color: '#5865F2'
             },
             {
               label: 'Support Development',
               desc: 'Help keep AppleBlox free and actively developed',
               icon: Heart,
-              url: 'https://discord.gg/AsZzX63sKV',
+              url: 'https://discord.gg/2EfdJfdwpp',
               color: '#FF2D55'
             },
             {

@@ -99,7 +99,7 @@ export function Sidebar({ page, onChange, user }: Props) {
       >
         {/* Discord support */}
         <button
-          onClick={() => window.api.app.openExternal('https://discord.gg/AsZzX63sKV')}
+          onClick={() => window.api.app.openExternal('https://discord.gg/2EfdJfdwpp')}
           className="w-full flex items-center gap-2.5 px-3 py-2 rounded-mac text-xs transition-all"
           style={{ color: 'rgba(255,255,255,0.4)' }}
           onMouseEnter={e => {
