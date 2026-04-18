@@ -1,0 +1,29 @@
+{
+  "name": "launchframe-discord-bot",
+  "version": "1.0.0",
+  "description": "The official LaunchFrame Discord bot — moderation, app status, announcements, and more",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "deploy": "tsx src/deploy-commands.ts",
+    "deploy:global": "GLOBAL_DEPLOY=true tsx src/deploy-commands.ts"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^2.3.0",
+    "axios": "^1.6.7",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/uuid": "^9.0.7",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
