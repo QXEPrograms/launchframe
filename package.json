@@ -1,0 +1,86 @@
+{
+  "name": "launchframe",
+  "version": "0.1.0",
+  "description": "The better way to run Roblox on macOS",
+  "main": "out/main/index.js",
+  "author": "QXEPrograms",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "dist": "npm run build && electron-builder --mac",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@xhayper/discord-rpc": "^1.2.0",
+    "chokidar": "^3.5.3",
+    "electron-updater": "^6.1.8",
+    "firebase": "^12.12.0"
+  },
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.0",
+    "@electron-toolkit/utils": "^3.0.0",
+    "@electron/notarize": "^3.1.1",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "electron": "^28.3.3",
+    "electron-builder": "^24.9.1",
+    "electron-vite": "^2.0.0",
+    "lucide-react": "^0.321.0",
+    "postcss": "^8.4.35",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.0"
+  },
+  "build": {
+    "appId": "app.launchframe",
+    "productName": "LaunchFrame",
+    "copyright": "Copyright © 2025 QXEPrograms",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "icon": "resources/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "resources/entitlements.mac.plist",
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "identity": "Developer ID Application: YOUR NAME (TEAM_ID)"
+    },
+    "dmg": {
+      "title": "LaunchFrame ${version}"
+    },
+    "afterSign": "scripts/notarize.js",
+    "files": [
+      "out/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": "resources/"
+      }
+    ]
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.1.0",
+    "utf-8-validate": "^6.0.6"
+  }
+}
