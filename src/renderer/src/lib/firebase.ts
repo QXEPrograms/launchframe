@@ -26,14 +26,13 @@ import {
   type User
 } from 'firebase/auth'
 
-// ← Replace these values with your Firebase project config
 const firebaseConfig = {
-  apiKey:            'YOUR_API_KEY',
-  authDomain:        'YOUR_PROJECT_ID.firebaseapp.com',
-  projectId:         'YOUR_PROJECT_ID',
-  storageBucket:     'YOUR_PROJECT_ID.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId:             'YOUR_APP_ID'
+  apiKey:            'AIzaSyDNu3jg-PWD4vPqZwg_6zwAEFYhhgvOP2g',
+  authDomain:        'launchframe-815aa.firebaseapp.com',
+  projectId:         'launchframe-815aa',
+  storageBucket:     'launchframe-815aa.firebasestorage.app',
+  messagingSenderId: '108729507228',
+  appId:             '1:108729507228:web:f376425f964ae96b2cbc59'
 }
 
 const app   = initializeApp(firebaseConfig)

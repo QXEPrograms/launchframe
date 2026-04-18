@@ -10,9 +10,9 @@ import { ExternalLink, X } from 'lucide-react'
  * ──────────────────────────────────────────────────────────────────────────────
  */
 const DONATION_LINKS = {
-  5:  'https://buy.stripe.com/YOUR_5_DOLLAR_LINK',
-  10: 'https://buy.stripe.com/YOUR_10_DOLLAR_LINK',
-  20: 'https://buy.stripe.com/YOUR_20_DOLLAR_LINK'
+  5:  'PASTE_YOUR_5_DOLLAR_STRIPE_LINK_HERE',
+  10: 'PASTE_YOUR_10_DOLLAR_STRIPE_LINK_HERE',
+  20: 'PASTE_YOUR_20_DOLLAR_STRIPE_LINK_HERE'
 }
 
 interface Props {
