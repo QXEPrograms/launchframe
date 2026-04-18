@@ -28,6 +28,10 @@ import { command as say } from './commands/say';
 import { command as embed } from './commands/embed';
 import { command as nick } from './commands/nick';
 import { command as role } from './commands/role';
+import { command as ticketpanel } from './commands/ticketpanel';
+import { command as closeticket } from './commands/closeticket';
+import { command as adduser } from './commands/adduser';
+import { command as removeuser } from './commands/removeuser';
 
 // ── Validation ────────────────────────────────────────────
 if (!process.env.DISCORD_TOKEN) {
@@ -62,6 +66,7 @@ const allCommands: Command[] = [
   status, release,
   userinfo, serverinfo,
   say, embed, nick, role,
+  ticketpanel, closeticket, adduser, removeuser,
 ];
 
 for (const cmd of allCommands) {

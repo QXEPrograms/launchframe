@@ -29,6 +29,10 @@ import { command as say } from './commands/say';
 import { command as embed } from './commands/embed';
 import { command as nick } from './commands/nick';
 import { command as role } from './commands/role';
+import { command as ticketpanel } from './commands/ticketpanel';
+import { command as closeticket } from './commands/closeticket';
+import { command as adduser } from './commands/adduser';
+import { command as removeuser } from './commands/removeuser';
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
@@ -46,6 +50,7 @@ const commands = [
   status, release,
   userinfo, serverinfo,
   say, embed, nick, role,
+  ticketpanel, closeticket, adduser, removeuser,
 ].map(cmd => cmd.data.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token);
