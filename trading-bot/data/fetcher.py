@@ -17,9 +17,17 @@ class MarketDataFetcher:
         exchange_class = getattr(ccxt, exchange_id)
         self.exchange = exchange_class({"enableRateLimit": True})
 
-    def get_session_candles(self, session_start: datetime) -> pd.DataFrame:
-        """Fetch all 1-min candles from session_start to now."""
+    def get_session_candles(self, session_start: datetime, session_end: datetime = None) -> pd.DataFrame:
+        """
+        Fetch 1-min candles from session_start up to session_end (or now).
+        For the 9 AM – 4 PM NY window, pass session_end = today 4 PM NY.
+        """
         since_ts = int(session_start.timestamp() * 1000)
+        end_ts = (
+            int(session_end.timestamp() * 1000)
+            if session_end
+            else int(datetime.now(pytz.utc).timestamp() * 1000)
+        )
         all_candles = []
 
         while True:
@@ -28,10 +36,11 @@ class MarketDataFetcher:
             )
             if not candles:
                 break
+            # Drop candles beyond session end
+            candles = [c for c in candles if c[0] <= end_ts]
             all_candles.extend(candles)
-            last_ts = candles[-1][0]
-            now_ts = int(datetime.now(pytz.utc).timestamp() * 1000)
-            if last_ts >= now_ts - 60_000 or len(candles) < 1000:
+            last_ts = candles[-1][0] if candles else since_ts
+            if last_ts >= end_ts - 60_000 or len(candles) < 1000:
                 break
             since_ts = last_ts + 60_000
 

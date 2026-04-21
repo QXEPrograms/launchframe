@@ -3,7 +3,7 @@
 LVN / SVP Trading Signal Bot
 ==============================
 Strategy  : Session Volume Profile + Single Prints + ISMT (3-Step Model)
-Timeframe : 1-minute candles, 6 PM – 6 PM NY session
+Timeframe : 1-minute candles, 9 AM – 4 PM NY (regular market hours)
 Signals   : Discord webhook
 
 Usage:
@@ -57,13 +57,34 @@ from signals.discord_webhook import send_trade_signal, send_status_update
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 
+SESSION_OPEN_HOUR  = 9
+SESSION_OPEN_MIN   = 0
+SESSION_CLOSE_HOUR = 16
+SESSION_CLOSE_MIN  = 0
+
+
 def current_session_start() -> datetime:
-    """Return the start of the current 6 PM – 6 PM NY session."""
+    """
+    Return the 9:00 AM NY open of the current (or most recent) session.
+    Outside market hours the bot uses yesterday's 9 AM so it still has
+    levels to display until the next open.
+    """
     now = datetime.now(NY_TZ)
-    start = now.replace(hour=18, minute=0, second=0, microsecond=0)
-    if now.hour < 18:
-        start -= timedelta(days=1)
-    return start
+    today_open = now.replace(
+        hour=SESSION_OPEN_HOUR, minute=SESSION_OPEN_MIN, second=0, microsecond=0
+    )
+    if now < today_open:
+        # Before today's open — use previous day's session
+        today_open -= timedelta(days=1)
+    return today_open
+
+
+def is_market_open() -> bool:
+    """Return True during the 9:00 AM – 4:00 PM NY window."""
+    now = datetime.now(NY_TZ)
+    open_time  = now.replace(hour=SESSION_OPEN_HOUR,  minute=SESSION_OPEN_MIN,  second=0, microsecond=0)
+    close_time = now.replace(hour=SESSION_CLOSE_HOUR, minute=SESSION_CLOSE_MIN, second=0, microsecond=0)
+    return open_time <= now <= close_time
 
 
 def print_signal(setup: TradeSetup, symbol: str, price: float) -> None:
@@ -89,6 +110,10 @@ def print_signal(setup: TradeSetup, symbol: str, price: float) -> None:
 
 def run_scan(fetcher: MarketDataFetcher, sent_keys: Set[str]) -> None:
     try:
+        if not is_market_open():
+            logger.info("Outside 9 AM – 4 PM NY window — waiting.")
+            return
+
         session_start = current_session_start()
         logger.info(
             "Scanning %s | session from %s NY",
@@ -96,7 +121,10 @@ def run_scan(fetcher: MarketDataFetcher, sent_keys: Set[str]) -> None:
             session_start.strftime("%Y-%m-%d %H:%M"),
         )
 
-        df = fetcher.get_session_candles(session_start)
+        session_end = session_start.replace(
+            hour=SESSION_CLOSE_HOUR, minute=SESSION_CLOSE_MIN
+        )
+        df = fetcher.get_session_candles(session_start, session_end=session_end)
         if len(df) < 30:
             logger.warning("Not enough candles yet (%d), skipping", len(df))
             return

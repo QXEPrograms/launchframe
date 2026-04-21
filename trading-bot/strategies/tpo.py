@@ -105,35 +105,32 @@ def compute_tpo(
 
 def get_overnight_single_prints(df: pd.DataFrame) -> List[float]:
     """
-    Single prints from the overnight session (4 PM prior day – 9:30 AM today).
-    These carry extra weight: if they hold overnight, they add directional bias.
+    Single prints from the pre-market window (before 9:00 AM NY today).
+    These carry extra weight for the 9 AM – 4 PM session: if they hold
+    through pre-market they add directional confidence at the open.
     """
-    overnight = df[
-        (df["timestamp"].dt.hour >= 16) |
-        (df["timestamp"].dt.hour < 9) |
-        ((df["timestamp"].dt.hour == 9) & (df["timestamp"].dt.minute < 30))
+    pre_market = df[
+        (df["timestamp"].dt.hour < 9)
     ].copy()
 
-    if len(overnight) < 2:
+    if len(pre_market) < 2:
         return []
 
-    return compute_tpo(overnight).single_prints
+    return compute_tpo(pre_market).single_prints
 
 
 def overnight_single_print_held(sp_price: float, df: pd.DataFrame, tolerance_pct: float = 0.001) -> bool:
     """
-    Return True if price stayed consistently on one side of sp_price during
-    the overnight session (meaning the level was respected, not crossed).
+    Return True if price stayed on one side of sp_price throughout pre-market
+    (before 9 AM NY), meaning the level was respected and not crossed.
     """
     tol = sp_price * tolerance_pct
-    overnight = df[
-        (df["timestamp"].dt.hour >= 16) | (df["timestamp"].dt.hour < 9)
-    ]
-    if overnight.empty:
+    pre_market = df[df["timestamp"].dt.hour < 9]
+    if pre_market.empty:
         return False
 
-    above = overnight[overnight["close"] > sp_price + tol]
-    below = overnight[overnight["close"] < sp_price - tol]
+    above = pre_market[pre_market["close"] > sp_price + tol]
+    below = pre_market[pre_market["close"] < sp_price - tol]
     return len(above) == 0 or len(below) == 0
 
 
